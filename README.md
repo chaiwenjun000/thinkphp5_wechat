@@ -9,7 +9,7 @@
 >帐号管理  
 >数据管理
 ### 配置
-在```extend\wechat\Wecaht.php```中配置
+在```extend\wechat\Config.php```中配置
 ### 使用
 
 ```

@@ -134,7 +134,7 @@ class Index
         //     'msgtype'=>'mpnews',
         //     );
         //$res=$weObj->sendGroupMassMessage($data);
-        $res=$weObj->Menu->getMenu();
+        $res=$weObj->getMenu();
         // $errCode = new ErrCode();
         // dump($errCode::getErrText($weObj->errCode));
         dump($res);
