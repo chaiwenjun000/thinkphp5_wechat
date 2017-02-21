@@ -85,4 +85,31 @@ class User extends Model{
             return $this->getError(); //错误详情见自动验证注释
         }
     }
+    /**
+     * 获取用户列表
+     * @return [type] [description]
+     */
+    public function getUserList()
+    {   
+        return $this->field('user_id,user_name')->paginate(10);
+    }
+    /**
+     * 不要密码更新信息
+     * @param  [type] $userId [description]
+     * @param  [type] $data   [description]
+     * @return [type]         [description]
+     */
+    public function updateUserFieldsNotCheck($userId,$data)
+    {
+        if(empty($userId) || empty($data)){
+            $this->error = '参数错误';
+            return false;
+        }
+        // 更新用户信息
+        if($this->validate('User.edit')->save($data,['user_id'=>$userId])){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

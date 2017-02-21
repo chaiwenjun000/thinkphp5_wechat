@@ -134,9 +134,37 @@ class Index
         //     'msgtype'=>'mpnews',
         //     );
         //$res=$weObj->sendGroupMassMessage($data);
-        $res=$weObj->getMenu();
-        // $errCode = new ErrCode();
-        // dump($errCode::getErrText($weObj->errCode));
+        $data=array(
+            'button'=>array(
+                0=>array(
+                    'type'=>'view',
+                    'name'=>'1',
+                    'url'=>'http://www.b.com'
+                )   
+            ),
+        );
+        $data2=array(
+            'button' => array (
+                0 => array (
+                   'name' => '扫码',
+                   'sub_button' => array (
+                       0 => array (
+                         'type' => 'scancode_waitmsg',
+                         'name' => '扫码带提示',
+                         'key' => 'rselfmenu_0_0',
+                       ),
+                       1 => array (
+                         'type' => 'scancode_push',
+                         'name' => '扫码推事件',
+                         'key' => 'rselfmenu_0_1',
+                       ),
+                   ),
+                ),
+            )
+        );
+        $res=$weObj->createMenu($data);
+        $errCode = new ErrCode();
+        dump($errCode::getErrText($weObj->errCode));
         dump($res);
     }
 }

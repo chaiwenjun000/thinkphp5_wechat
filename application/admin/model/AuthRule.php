@@ -28,6 +28,15 @@ class AuthRule extends Model{
         return $this->field($field)->where('id',$ruleId)->find();
     }
     /**
+     * 获取规则路径
+     * @param  [type] $ruleId [description]
+     * @return [type]         [description]
+     */
+    public function getRulePath($ruleId)
+    {
+        return $this->where('id',$ruleId)->value('path');
+    }
+    /**
      * 获取指定权限子权限
      * @param  [type] $ruleId [description]
      * @return [type]         [description]
@@ -36,6 +45,11 @@ class AuthRule extends Model{
     {
         return $this->field('id')->where('pid',$ruleId)->select();
     }
+    /**
+     * 删除权限
+     * @param  [type] $ids [description]
+     * @return [type]      [description]
+     */
     public function deleteRule($ids)
     {
         return $this->where('id','in',$ids)->delete();

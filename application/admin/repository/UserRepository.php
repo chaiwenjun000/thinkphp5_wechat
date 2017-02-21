@@ -34,4 +34,20 @@ class UserRepository{
         $password=wxEncrypt($password);
         return $this->model->register($userName, $password, $email, $mobile, $regIp);
     }
+    /**
+     * 不要密码更新信息
+     * @param  string $value [description]
+     * @return [type]        [description]
+     */
+    public function updateInfoNotCheck($userId,$data)
+    {
+        if($this->model->updateUserFieldsNotCheck($userId, $data) !== false){
+            $return['status'] = true;
+        }else{
+            $return['status'] = false;
+            $return['info'] = $this->model->getError();
+        }
+        return $return;
+    }
+
 }

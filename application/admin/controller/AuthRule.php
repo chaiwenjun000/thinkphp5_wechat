@@ -38,7 +38,16 @@ class AuthRule extends Base{
             $data=input('post.');
             if(!empty($data['is_show'])){
                 $data['is_show']=1;
+            }else{
+                $data['is_show']=0;
             }
+            if(empty($data['pid'])){
+                $data['path']=0;
+            }else{
+                $path=$this->authRuleModel->getRulePath($data['pid']);
+                $data['path']=$path.'-'.$data['pid'];
+            }
+            
             if($this->authRuleModel->validate(true)->save($data)){
                 // 给管理员添加全部权限
                 $adminRules = $this->authGroupModel->getAdminRules();
@@ -84,6 +93,14 @@ class AuthRule extends Base{
 
             if(!empty($data['is_show'])){
                 $data['is_show']=1;
+            }else{
+                $data['is_show']=0;
+            }
+            if(empty($data['pid'])){
+                $data['path']=0;
+            }else{
+                $path=$this->authRuleModel->getRulePath($data['pid']);
+                $data['path']=$path.'-'.$data['pid'];
             }
             if($this->authRuleModel->validate(true)->save($data, ['id'=>$id])){
                 $this->getSidebar();
