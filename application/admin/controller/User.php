@@ -17,7 +17,7 @@ class User extends Base{
         parent::__construct();
         $this->userModel=new UserModel();
         $this->authGroupModel=new AuthGroupModel();
-        $this->userRepository = new UserRepository();
+        $this->userRepository =new UserRepository();
         $this->authGroupAccessModel = new authGroupAccessModel();
     }
     /**

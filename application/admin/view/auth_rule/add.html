@@ -29,9 +29,12 @@
                             <div class="col-sm-6">
                                 <select name="pid" style="width: 100%;">
                                     <option value="0">一级菜单</option>
-                                    {volist name="pidData" id="vo"} {notin name="vo.id" value="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17"}
-                                    <option value="{$vo.id}">{if $vo.count == 2}——{elseif $vo.count == 3}————{/if}{$vo.title}</option>
-                                    {/notin} {/volist}
+                                    {volist name="pidData" id="vo"} 
+                                    <option value="{$vo.id}">
+                                    {if $vo.count == 2}——
+                                    {elseif $vo.count == 3}————
+                                    {/if}{$vo.title}</option>
+                                    {/volist}
                                 </select>
                             </div>
                         </div>

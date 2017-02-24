@@ -3,14 +3,17 @@ namespace app\admin\controller;
 use app\admin\model\Menu as MenuModel;
 use think\Db;
 use wechat\Wechat;
+use think\Request;
 /**
  * 菜单管理
  */
 class Menu extends Base{
     protected $menuModel;
-    public function __construct(){
+    protected $request;
+    public function __construct(Request $request){
         parent::__construct();
         $this->menuModel=new MenuModel;
+        $this->request=$request::instance();
     }
     /**
      * 菜单列表
@@ -23,7 +26,25 @@ class Menu extends Base{
         }
         $this->assign('list',$list);
         return view('index');
-        return view('index');
+    }
+    /**
+     * 设置菜单显示隐藏
+     */
+    public function setShow()
+    {
+        if($this->request->isPost()){
+            $id = $this->request->param('id');
+            $isShow = $this->request->param('isShow')=='true'?1:0;
+            if(empty($id)){
+                return $this->error('参数错误');
+            }
+            $res=$this->menuModel->save(['is_show'=>$isShow],['id'=>$id]);
+            if($res){
+                return $this->success('操作成功,请点击生成菜单按钮重新生成菜单');
+            }else{
+                return $this->error('操作失败');
+            }
+        }
     }
     /**
      * 添加菜单
@@ -31,6 +52,8 @@ class Menu extends Base{
     public function add(){
         if(request()->isPost()){
             $data=input('post.');
+
+            
             if(!empty($data['is_show'])){
                 $data['is_show']=1;
             }else{
@@ -39,7 +62,7 @@ class Menu extends Base{
             if(empty($data['pid'])){
                 $data['path']=0;
             }else{
-                $path=$this->authRuleModel->getRulePath($data['pid']);
+                $path=$this->menuModel->getMenuPath($data['pid']);
                 $data['path']=$path.'-'.$data['pid'];
             }
             if($this->menuModel->validate(true)->save($data)){
@@ -119,7 +142,7 @@ class Menu extends Base{
      * @return [type] [description]
      */
     private function getFirst(){
-        $data = $this->menuModel->getFirstMenu();
+        $data = $this->menuModel->getFirstMenu()->toArray();
         array_unshift($data, ['id'=>0,'title'=>'一级菜单']);
         $this->assign('pids', $data);
     }
@@ -130,10 +153,12 @@ class Menu extends Base{
     public function create()
     {
         $weObj = new Wechat();
-        $parentMenus=$this->menuModel->getFirstMenu(3);
+        $parentMenus=$this->menuModel->getFirstMenu(3)->toArray();
         $menu['button'] = [];
         foreach ($parentMenus as $key => $parentMenu) {
-            $childMenus=$this->menuModel->getMenuChild(5,'sort','title,url,keyword');
+            $childMenus=$this->menuModel
+                             ->getMenuChild(5,'sort','title,url,keyword')
+                             ->toArray();
             if ($childMenus) {
                 $menu['button'][$key]=[
                     'name'=>$parentMenu['title'],
@@ -172,10 +197,11 @@ class Menu extends Base{
             }
         }
         $result = $weObj->createMenu($menu);
+        
         if($result){
-            return $this->success('菜单生成成功');
+            return $this->success('菜单生成成功','index');
         }else{
-            return $this->error($weObj->getErrorText());
+            return $this->error($weObj->getErrorText(),'index');
         }
     }
 }

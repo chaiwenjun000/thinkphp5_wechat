@@ -1,4 +1,5 @@
-{extend name="base/common" /} {block name="content"}
+{extend name="base/common" /} 
+{block name="content"}
 <button type="button" tooltip="添加菜单" class="btn btn-sm btn-azure btn-addon" onclick="javascript:window.location.href = '{:url('menu/add')}'"> <i class="fa fa-plus"></i> Add
 </button>
 
@@ -54,5 +55,20 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function(){
+        $('.yesno').click(function(){
+            id=$(this).data('id');
+            isShow=$(this).is(':checked');
+            $.post(
+                '{:url("menu/setShow")}',
+                {id:id,isShow:isShow},
+                function(data){
+                    layer.alert(data.msg);
+                }
+            );
+        });
+    });
+</script>
 {/block}
 

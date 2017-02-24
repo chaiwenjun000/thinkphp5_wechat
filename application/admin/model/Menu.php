@@ -1,7 +1,9 @@
 <?php
 namespace app\admin\model;
 use think\Model;
+use traits\model\SoftDelete;
 class Menu extends Model{
+    use SoftDelete;
     //开启自动写入时间戳字段
     protected $autoWriteTimestamp = true;
     //设置当前模型对应的完整数据表名称
@@ -56,7 +58,7 @@ class Menu extends Model{
      */
     public function deleteMenu($ids)
     {
-        return $this->where('id','in',$ids)->delete();
+        return self::destroy($ids);//$this->where('id','in',$ids)->delete();
     }
 
 }

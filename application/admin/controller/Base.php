@@ -16,6 +16,7 @@ class Base extends Controller{
         $activeRouter = $dispatch['module']['0'] . '/' . $dispatch['module'][1] . '/' . $dispatch['module'][2];
 
         $auth = new Auth();
+
         if(!$auth->check($activeRouter, session('user_auth')['uid'])){
             return $this->error('没有权限','index/index');
         }

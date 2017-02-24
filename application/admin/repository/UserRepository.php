@@ -4,11 +4,11 @@ use app\admin\model\User;
 use think\Request;
 class UserRepository{
 
-    protected $model;
+    protected $user;
 
     public function __construct()
     {
-        $this->model = new User;
+        $this->user = new User();
     }
     /**
      * 用户登录认证
@@ -19,7 +19,7 @@ class UserRepository{
      */
     public function login($userName, $password, $type = 1)
     {
-        return $this->model->login($userName, $password, $type);
+        return $this->user->login($userName, $password, $type);
     }
     /**
      * 注册一个新用户
@@ -32,7 +32,7 @@ class UserRepository{
     public function register($userName, $password, $email = '', $mobile = ''){
         $regIp=Request::instance()->ip();
         $password=wxEncrypt($password);
-        return $this->model->register($userName, $password, $email, $mobile, $regIp);
+        return $this->user->register($userName, $password, $email, $mobile, $regIp);
     }
     /**
      * 不要密码更新信息
@@ -41,11 +41,11 @@ class UserRepository{
      */
     public function updateInfoNotCheck($userId,$data)
     {
-        if($this->model->updateUserFieldsNotCheck($userId, $data) !== false){
+        if($this->user->updateUserFieldsNotCheck($userId, $data) !== false){
             $return['status'] = true;
         }else{
             $return['status'] = false;
-            $return['info'] = $this->model->getError();
+            $return['info'] = $this->user->getError();
         }
         return $return;
     }

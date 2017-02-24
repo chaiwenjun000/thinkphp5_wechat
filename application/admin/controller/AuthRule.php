@@ -30,8 +30,6 @@ class AuthRule extends Base{
     }
     /**
      * 添加权限
-     * @author ning
-     * @DateTime 2016-06-22T22:26:12+0800
      */
     public function add(){
         if(request()->isPost()){
@@ -76,18 +74,13 @@ class AuthRule extends Base{
 
     /**
      * 编辑权限
-     * @author ning
-     * @DateTime 2016-06-23T21:33:15+0800
-     * @return   [type]                   [description]
+     * @return   [type]    [description]
      */
     public function edit(){
         if(request()->isPost()){
             $id = input('?post.id') ? input('post.id') : '';
             if(!$id){
                 return $this->error('参数错误');
-            }
-            if(in_array($id, explode(',','1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17'))){
-                return $this->error('该权限不允许编辑');
             }
             $data=input('post.');
 
@@ -130,9 +123,7 @@ class AuthRule extends Base{
 
     /**
      * 删除权限
-     * @author ning
-     * @DateTime 2016-06-26T11:12:01+0800
-     * @return   [type]                   [description]
+     * @return   [type]   [description]
      */
     public function del(){
         $id = input('?param.id') ? intval(input('param.id')) : '';

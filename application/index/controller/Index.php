@@ -3,168 +3,54 @@ namespace app\index\controller;
 
 use wechat\Wechat;
 use wechat\ErrCode;
-
+use app\admin\model\TextReply;
+use app\admin\model\ImgTextReply;
+use app\admin\model\ReplyKeyword;
 
 class Index
 {
+    protected $textReplyModel;
+    protected $imgTextReplyModel;
+    protected $replyKeywordModel;
+    public function __construct()
+    {
+        $this->textReplyModel = new TextReply();
+        $this->imgTextReplyModel = new ImgTextReply();
+        $this->replyKeywordModel = new ReplyKeyword();
+    }
     public function index()
     {
         $weObj = new Wechat();
         $weObj->valid();
         $weObj->getRev();
-        
-        // $weObj->checkAuth();
-        // $weObj->getJsTicket();
-        // $data1=array (
-        //    'button' => array (
-        //      0 => array (
-        //        'name' => '扫码',
-        //        'sub_button' => array (
-        //            0 => array (
-        //              'type' => 'scancode_waitmsg',
-        //              'name' => '扫码带提示',
-        //              'key' => 'rselfmenu_0_0',
-        //            ),
-        //            1 => array (
-        //              'type' => 'scancode_push',
-        //              'name' => '扫码推事件',
-        //              'key' => 'rselfmenu_0_1',
-        //            ),
-        //        ),
-        //      ),
-        //      1 => array (
-        //        'name' => '发图',
-        //        'sub_button' => array (
-        //            0 => array (
-        //              'type' => 'pic_sysphoto',
-        //              'name' => '系统拍照发图',
-        //              'key' => 'rselfmenu_1_0',
-        //            ),
-        //            1 => array (
-        //              'type' => 'pic_photo_or_album',
-        //              'name' => '拍照或者相册发图',
-        //              'key' => 'rselfmenu_1_1',
-        //            )
-        //        ),
-        //      ),
-        //      2 => array (
-        //        'type' => 'location_select',
-        //        'name' => '发送位置',
-        //        'key' => 'rselfmenu_2_0'
-        //         ),
-        //     ),
-        // );
-        // $data2=array(
-        //     'button' => array (
-        //         0 => array (
-        //            'name' => '扫码',
-        //            'sub_button' => array (
-        //                0 => array (
-        //                  'type' => 'scancode_waitmsg',
-        //                  'name' => '扫码带提示',
-        //                  'key' => 'rselfmenu_0_0',
-        //                ),
-        //                1 => array (
-        //                  'type' => 'scancode_push',
-        //                  'name' => '扫码推事件',
-        //                  'key' => 'rselfmenu_0_1',
-        //                ),
-        //            ),
-        //         ),
-        //         1 => array (
-        //            'name' => '发图',
-        //            'sub_button' => array (
-        //                0 => array (
-        //                     'type' => 'pic_sysphoto',
-        //                     'name' => '系统拍照发图',
-        //                     'key' => 'rselfmenu_1_0',
-        //                ),
-        //                1 => array (
-        //                     'type' => 'pic_photo_or_album',
-        //                     'name' => '拍照或者相册发图',
-        //                     'key' => 'rselfmenu_1_1',
-        //                )
-        //            ),
-        //         ),
-        //     ),
-        //     'matchrule' => array (
-        //         "sex"=>"1",
-        //     ),
-        // );
-        // $weObj->createMenu($data1);
-        // $weObj->createConditionalMenu($data2);
-        // $weObj->text($weObj->errCode)->reply();
-        //$weObj->deleteMenu();
-        //$weObj->getMenu();
-        switch ($weObj->getRev()->getRevType()) {
-            case 'text':
-                $weObj->text('1231')->reply();
-                break;
-            case 'image':
-                $weObj->image($weObj->getRev()->getRevMediaId())->reply();
-                break;
-            case 'voice':
-                $weObj->text($weObj->getRev()->getRevContent())->reply();
+        $type = $weObj->getRev()->getRevType();
+        $event = $this->weObj->getRev()->getRevEvent();
+        //关键字回复
+        switch ($type) {
+            case Wechat::MSGTYPE_TEXT:
+                $keyword = $weObj->getRev()->getRevContent();
+                $this->reply($keyword);
                 break;
         }
     }
-    public function test(){
-        $weObj = new Wechat();
-        
-        // $data=array(
-        //         'articles'=>array(
-        //             0=>array(
-        //                  "thumb_media_id"=>"kzlh8NVy2Ys9JeqKntLhPqtCCBEm5Z_R6O18XLTngMzFuhWLAl4jOnvNtZ_2q3yN",
-        //                  "author"=>"xxx",
-        //                  "title"=>"Happy Day",
-        //                  "content_source_url"=>"www.qq.com",
-        //                  "content"=>"content",
-        //                  "digest"=>"digest",
-        //                  "show_cover_pic"=>1
-        //                 )
-        //             )
-        //     );
-        // $data=array(
-        //     'filter'=>array(
-        //         'is_to_all'=>true,
-        //         ),
-        //     'mpnews'=>array(
-        //         'media_id'=>'JqOXqbFO7IYBF4487AZAhNvGMpo_6ndzCwHhgqw6lCwRWsuaK-hZRBuwTwIYF2yz',
-        //         ),
-        //     'msgtype'=>'mpnews',
-        //     );
-        //$res=$weObj->sendGroupMassMessage($data);
-        $data=array(
-            'button'=>array(
-                0=>array(
-                    'type'=>'view',
-                    'name'=>'1',
-                    'url'=>'http://www.b.com'
-                )   
-            ),
-        );
-        $data2=array(
-            'button' => array (
-                0 => array (
-                   'name' => '扫码',
-                   'sub_button' => array (
-                       0 => array (
-                         'type' => 'scancode_waitmsg',
-                         'name' => '扫码带提示',
-                         'key' => 'rselfmenu_0_0',
-                       ),
-                       1 => array (
-                         'type' => 'scancode_push',
-                         'name' => '扫码推事件',
-                         'key' => 'rselfmenu_0_1',
-                       ),
-                   ),
-                ),
-            )
-        );
-        $res=$weObj->createMenu($data);
-        $errCode = new ErrCode();
-        dump($errCode::getErrText($weObj->errCode));
-        dump($res);
+    /**
+     * 匹配关键字
+     * 首先完整匹配
+     * 如果未匹配进行包含匹配
+     * 如果未匹配回复默认回复
+     * @param  [type] $keyword [description]
+     * @return [type]          [description]
+     */
+    private function reply($keyword)
+    {
+        $data = $this->replyKeywordModel->completeMatch($keyword);
+        if(empty($data)){
+            $data = $this->replyKeywordModel->unCompleteMatch($keyword);
+        }
+        if(empty($data)){
+            
+        }else{
+            
+        }
     }
 }

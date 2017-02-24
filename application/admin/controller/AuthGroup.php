@@ -111,7 +111,8 @@ class AuthGroup extends Base{
             $data = $this->authGroupModel->getGroupById($id);
             $where['type']=1;
             $order='path,sort asc';
-            $authRuleData = \think\Db::name('auth_rule')->field('id,name,title,pid,path')->where('type',1)->order('path,sort asc')->select();
+            $authRuleData = $this->authRuleModel->getRuleData($where,$order)
+                                                ->toArray();
             $resource = [];
             foreach ($authRuleData as $key => $value) {
                 $path = explode('-', $value['path']);
