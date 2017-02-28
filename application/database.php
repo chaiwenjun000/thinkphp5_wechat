@@ -1,4 +1,5 @@
 <?php
+use think\Env;
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -17,9 +18,9 @@ return [
     // 数据库名
     'database'        => 'tp5_wechat',
     // 用户名
-    'username'        => 'root',
+    'username'        => Env::get('database.username'),
     // 密码
-    'password'        => '0.VfYAXoUlsznFX2',
+    'password'        => Env::get('database.password'),
     // 端口
     'hostport'        => '',
     // 连接dsn
