@@ -112,4 +112,42 @@ class User extends Model{
             return false;
         }
     }
+    /**
+     * 更新用户信息
+     * @param int $uid 用户id
+     * @param string $password 密码，用来验证
+     * @param array $data 修改的字段数组
+     * @return true 修改成功，false 修改失败
+     */
+    public function updateUserFields($uid, $password, $data){
+        if(empty($uid) || empty($password) || empty($data)){
+            $this->error = '参数错误！';
+            return false;
+        }
+        //更新前检查用户密码
+        if(!$this->verifyUser($uid, $password)){
+            $this->error = '验证出错：密码不正确！';
+            return false;
+        }
+        //更新用户信息
+        if($this->validate(true)->save($data,['user_id'=>$uid])){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    /**
+     * 验证用户密码
+     * @param int $uid 用户id
+     * @param string $password_in 密码
+     * @return true 验证成功，false 验证失败
+     */
+    protected function verifyUser($uid, $password_in){
+        $password = $this->getFieldByUserId($uid, 'password');
+        if(wxEncrypt($password_in) === $password){
+            return true;
+        }
+        return false;
+    }
+
 }

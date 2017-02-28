@@ -41,7 +41,9 @@ class Reply extends Base
             $this->success('操作成功','subscribe');
         }else{
             $data= $this->subReplyModel->getLast();
+            $kewords= $this->replyKeywordModel->getAllKeyword();
             $this->assign('data',$data);
+            $this->assign('kewords',$kewords);
             return view('subscribe');
         }
     }
@@ -56,7 +58,9 @@ class Reply extends Base
             $this->success('操作成功','defaultreply');
         }else{
             $data= $this->defReplyModel->getLast();
+            $kewords= $this->replyKeywordModel->getAllKeyword();
             $this->assign('data',$data);
+            $this->assign('kewords',$kewords);
             return view('defaultreply');
         }
     }

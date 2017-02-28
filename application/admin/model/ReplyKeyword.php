@@ -66,4 +66,8 @@ class ReplyKeyword extends Base
                     ->field('pid,module')
                     ->find();
     }
+    public function getAllKeyword()
+    {
+        return $this->where('type',1)->field('keyword')->select();
+    }
 }

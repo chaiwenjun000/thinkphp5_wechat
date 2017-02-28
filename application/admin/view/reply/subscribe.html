@@ -12,7 +12,13 @@
                         <div class="form-group">
                             <label for="keyword" class="col-sm-2 control-label no-padding-right">关注回复关键字</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="keyword" placeholder="" name="keyword" value="{$data}">
+                                <select name="keyword" class="form-control">
+                                {volist name="kewords" id="vo"}
+                                    <option value="{$vo.keyword}" {if condition="$data==$vo['keyword']"}selected{/if}>
+                                        {$vo.keyword}
+                                    </option>
+                                {/volist}
+                                </select>
                             </div>
                             
                         </div> 

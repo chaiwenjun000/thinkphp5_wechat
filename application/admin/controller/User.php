@@ -123,4 +123,39 @@ class User extends Base{
             return $this->error('删除失败');
         }
     }
+    /**
+     * 修改密码
+     * @return [type] [description]
+     */
+    public function changePwd(){
+        if(request()->isPost()){
+            // if(session('user_auth')['uid'] == 1){
+            //     return $this->error('禁止修改管理员密码');
+            // }
+            $oldPassword = input('?post.oldPassword') ? input('post.oldPassword') : '';
+            if(!$oldPassword){
+                return $this->error('请填写原密码');
+            }
+            $password = input('?post.password') ? input('post.password') : '';
+            if(!$password){
+                return $this->error('请填写新密码');
+            }
+            $repassword = input('?post.repassword') ? input('post.repassword') : '';
+            if(!$repassword){
+                return $this->error('请填写确认密码');
+            }
+            if($password != $repassword){
+                return $this->error('新密码和确认密码不一致');
+            }
+            $data = ['password'=>wxEncrypt($password)];
+            $res  = $this->userRepository->updateInfo(session('user_auth')['uid'], $oldPassword, $data);
+            if($res['status']){
+                return $this->success('修改密码成功！');
+            }else{
+                return $this->error($res['info']);
+            }
+        }else{
+            return view('changePwd');
+        }
+    }
 }   

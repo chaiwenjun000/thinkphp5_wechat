@@ -36,8 +36,9 @@
                                     {volist id="level3" name="level2['child']"}
                                     <li {if $uri == $level3['name']}class="active"{/if}>
                                         <a href='{if !empty($level3["name"])}{:url($level3['name'])}{else}#{/if}'>
-                                            <span class="menu-icon glyphicon glyphicon-hand-right"></span>
-                                            <span class="menu-text">{$level3['title']}</span>
+                                            <span class="menu-icon fa fa-sliders"></span>
+                                            <span class="menu-text">    {$level3['title']}
+                                            </span>
                                         </a>
                                     </li>
                                     {/volist}
