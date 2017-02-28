@@ -66,6 +66,10 @@ class ReplyKeyword extends Base
                     ->field('pid,module')
                     ->find();
     }
+    /**
+     * 获取所有关键词
+     * @return [type] [description]
+     */
     public function getAllKeyword()
     {
         return $this->where('type',1)->field('keyword')->select();
