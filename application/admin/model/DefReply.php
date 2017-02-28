@@ -6,7 +6,7 @@ use think\Model;
 /**
  * 关注回复
  */
-class SubReply extends Base
+class DefReply extends Base
 {
     /**
      * 获取最新的内容

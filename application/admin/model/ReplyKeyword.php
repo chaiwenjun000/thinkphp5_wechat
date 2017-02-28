@@ -13,7 +13,7 @@ class ReplyKeyword extends Base
             2=>'包含匹配',
         );
     private $_module=array(
-            'img'=>'图文',
+            'image'=>'图文',
             'text'=>'文本',
         );
     /**

@@ -6,14 +6,17 @@ use think\Controller;
 use think\Request;
 use think\Db;
 use app\admin\model\SubReply as SubReplyModel;
+use app\admin\model\DefReply as DefReplyModel;
 use app\admin\model\TextReply as TextReplyModel;
 use app\admin\model\ImgTextReply as ImgTextReplyModel;
 use app\admin\model\ReplyKeyword as ReplyKeywordModel;
+use wechat\Wechat;
 
 class Reply extends Base
 {
     protected $request;
     protected $subReplyModel;
+    protected $defReplyModel;
     protected $textReplyModel;
     protected $imgTextReplyModel;
     protected $replyKeywordModel;
@@ -22,6 +25,7 @@ class Reply extends Base
         parent::__construct();
         $this->request=$request;
         $this->subReplyModel=new SubReplyModel();
+        $this->defReplyModel=new DefReplyModel();
         $this->textReplyModel=new TextReplyModel();
         $this->imgTextReplyModel=new ImgTextReplyModel();
         $this->replyKeywordModel = new ReplyKeywordModel();
@@ -39,6 +43,21 @@ class Reply extends Base
             $data= $this->subReplyModel->getLast();
             $this->assign('data',$data);
             return view('subscribe');
+        }
+    }
+    /**
+     * 默认回复
+     * @return [type] [description]
+     */
+    public function defaultReply()
+    {
+        if($this->request->isPost()){
+            $this->defReplyModel->save($this->request->param());
+            $this->success('操作成功','defaultreply');
+        }else{
+            $data= $this->defReplyModel->getLast();
+            $this->assign('data',$data);
+            return view('defaultreply');
         }
     }
     /**
@@ -63,7 +82,7 @@ class Reply extends Base
                 'pid'=>$this->textReplyModel->id,
                 'keyword'=>$this->request->param('keyword'),
                 'type'=>$this->request->param('type'),
-                'module'=>'text',
+                'module'=>Wechat::MSGTYPE_TEXT,
                 );
             $this->replyKeywordModel->save($data);
             $this->success('操作成功','reply/text');
@@ -83,7 +102,7 @@ class Reply extends Base
             $data=array(
                 'keyword'=>$this->request->param('keyword'),
                 'type'=>$this->request->param('type'),
-                'module'=>'text',
+                'module'=>Wechat::MSGTYPE_TEXT,
                 );
             $this->replyKeywordModel->save($data,['pid'=>$id]);
             $this->success('操作成功','reply/text');
@@ -139,7 +158,7 @@ class Reply extends Base
                 'pid'=>$this->imgTextReplyModel->id,
                 'keyword'=>$this->request->param('keyword'),
                 'type'=>$this->request->param('type'),
-                'module'=>'img',
+                'module'=>Wechat::MSGTYPE_IMAGE,
                 );
             $this->replyKeywordModel->save($data);
             $this->success('操作成功','reply/imgtext');
@@ -165,7 +184,7 @@ class Reply extends Base
             $data=array(
                 'keyword'=>$this->request->param('keyword'),
                 'type'=>$this->request->param('type'),
-                'module'=>'text',
+                'module'=>Wechat::MSGTYPE_IMAGE,
                 );
             $this->replyKeywordModel->save($data,['pid'=>$id]);
             $this->success('操作成功','reply/imgtext');
