@@ -14,5 +14,5 @@
 >文本回复  
 >权限管理  
   
-  
-[微信包来源（去掉了不少目前没用 的）](https://github.com/dodgepudding/wechat-php-sdk)
+
+[微信包来源（去掉了不少目前没用的）](https://github.com/dodgepudding/wechat-php-sdk)
