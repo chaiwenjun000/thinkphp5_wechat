@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use wechat\Wechat;
 use wechat\ErrCode;
+use wechat\Log;
 use app\admin\model\SubReply;
 use app\admin\model\DefReply;
 use app\admin\model\TextReply;

@@ -26,12 +26,14 @@ class WechatConfig extends Base
             $appId=$this->request->param('appId');
             $appSecret=$this->request->param('appSecret');
             $token=$this->request->param('token');
+            $encodingAesKey=$this->request->param('encodingAesKey');
             $this->wechatConfigModel->startTrans();
             try {
                 $this->wechatConfigModel->saveAll([
                 ['id'=>1,'config_name'=>'appId','config_value'=>$appId],
                 ['id'=>2,'config_name'=>'appSecret','config_value'=>$appSecret],
                 ['id'=>3,'config_name'=>'token','config_value'=>$token],
+                ['id'=>4,'config_name'=>'encodingAesKey','config_value'=>$encodingAesKey],
                 ]);
                 $this->wechatConfigModel->commit(); 
                 $this->putFile(); 
